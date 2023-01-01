@@ -83,8 +83,8 @@ player_group = pygame.sprite.Group()
 # Create player1
 player1 = Player(
     "C:\\Users\\xinyi\\Downloads\\Panel-Party\\game\\ghost.png", 50, 50)
-player1.rect.x = 25
-player1.rect.y = 25
+player1.rect.x = 0
+player1.rect.y = 0
 player_group.add(player1)
 all_group.add(player1)
 
