@@ -62,6 +62,7 @@ dist = 1
 p1_points = 0
 p2_points = 0
 timer = 10
+tile_size = 30
 my_font = pygame.font.SysFont('Comic Sans MS', 30)
 text = my_font.render(str(timer), True, (0, 0, 0))
 timer_event = pygame.USEREVENT+1
@@ -70,9 +71,9 @@ pygame.time.set_timer(timer_event, 1000)
 # Game Objects
 all_group = pygame.sprite.Group()
 tile_group = pygame.sprite.Group()
-for row in range(40, screen_width, 65):
-    for col in range(40, screen_width, 65):
-        tile = Tile(50, 50, row, col, (128, 128, 128))
+for row in range(40, screen_width, 35):
+    for col in range(40, screen_width, 35):
+        tile = Tile(tile_size, tile_size, row, col, (128, 128, 128))
         tile_group.add(tile)
         tile_group.draw(screen)
         all_group.add(tile)
@@ -80,14 +81,16 @@ for row in range(40, screen_width, 65):
 player_group = pygame.sprite.Group()
 
 # Create player1
-player1 = Player('ghost.png', 50, 50)
+player1 = Player(
+    "C:\\Users\\xinyi\\Downloads\\Panel-Party\\game\\ghost.png", 50, 50)
 player1.rect.x = 25
 player1.rect.y = 25
 player_group.add(player1)
 all_group.add(player1)
 
 # Create player2
-player2 = Player('super-mario.png', 50, 50)
+player2 = Player(
+    "C:\\Users\\xinyi\\Downloads\\Panel-Party\\game\\super-mario.png", 50, 50)
 player2.rect.x = screen_width - 25
 player2.rect.y = screen_height - 25
 player_group.add(player2)
