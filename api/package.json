@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "ts-node src/server",
     "dev:client": "ts-node src/client",
+    "build": "tsc --build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

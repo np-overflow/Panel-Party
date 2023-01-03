@@ -8,17 +8,19 @@ const server = new Server<
     SocketData
 >(8000);
 
+let pid = -1;
+console.info("Server started on port 8000")
+
 server.on("connection", (socket: Socket<ClientToServerEvents, ServerToClientEvents>) => {
     const { id } = socket
 
     socket.join("room")
-    server.to("room").emit("clientJoin", { id });
-    socket.on("disconnect", () => {
-        server.to("room").emit("clientLeave", { id });
-    });
+    socket.to("room").emit("clientJoin", { id, pid: (pid++).toString() })
+    socket.on('disconnect', () => { pid-- })
 
     socket.on("keyPress", ({ key }) => {
         console.info(`Client [id=${id}] pressed [key=${key}]`);
+        server.to("room").emit("keyPress", { key, id });
     })
 });
 
