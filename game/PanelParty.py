@@ -1,4 +1,5 @@
 import pygame
+from socketio import Client
 
 
 class Tile(pygame.sprite.Sprite):
@@ -50,6 +51,8 @@ class Player(pygame.sprite.Sprite):
 
 # General setup
 pygame.init()
+socket = Client()
+socket.connect("http://localhost:8000")
 
 # Main window
 screen_width = 600
@@ -61,7 +64,7 @@ pygame.display.set_caption('Panel Party')
 dist = 1
 p1_points = 0
 p2_points = 0
-timer = 10
+timer = 20
 tile_size = 30
 my_font = pygame.font.SysFont('Comic Sans MS', 30)
 text = my_font.render(str(timer), True, (0, 0, 0))
@@ -81,18 +84,48 @@ for row in range(40, screen_width, 35):
 player_group = pygame.sprite.Group()
 
 # Create player1
-player1 = Player("/ghost.png", 50, 50)
+player1 = Player("ghost.png", 50, 50)
 player1.rect.x = 0
 player1.rect.y = 0
 player_group.add(player1)
 all_group.add(player1)
 
 # Create player2
-player2 = Player("/super-mario.png", 50, 50)
+player2 = Player("super-mario.png", 50, 50)
 player2.rect.x = screen_width - 25
 player2.rect.y = screen_height - 25
 player_group.add(player2)
 all_group.add(player2)
+
+player_map = {
+    '0':  player1,
+    '1': player2
+}
+
+
+@socket.on('keyPress')
+def on_key_press(data):
+    key: str = data.get('key').rstrip()
+    sid = data.get('id')
+
+    if key == 'LEFT':
+        player_map.get(sid).moveLeft(dist)
+    if key == 'RIGHT':
+        player_map.get(sid).moveRight(dist)
+    if key == 'DOWN':
+        player_map.get(sid).moveDown(dist)
+    if key == 'UP':
+        player_map.get(sid).moveUp(dist)
+    pass
+
+
+@socket.on('clientJoin')
+def on_client_join(data):
+    player_map[data.get("id")] = player_map.pop(data.get("pid"))
+    print(f"{player_map} \n")
+    # print(f"{data} \n")
+    pass
+
 
 # Game Loop
 while True and timer != 0:
@@ -114,29 +147,6 @@ while True and timer != 0:
     screen.fill((0, 0, 0))
     pygame.draw.rect(screen, (0, 255, 0), pygame.Rect(0, 0, 600, 600), 2)
     screen.blit(text, (250, 650))
-
-    # keys to control movements
-    keys = pygame.key.get_pressed()
-    # Player 1 movements
-    player1.border()
-    if keys[pygame.K_LEFT]:
-        player1.moveLeft(dist)
-    if keys[pygame.K_RIGHT]:
-        player1.moveRight(dist)
-    if keys[pygame.K_DOWN]:
-        player1.moveDown(dist)
-    if keys[pygame.K_UP]:
-        player1.moveUp(dist)
-    # Player 2 movements
-    player2.border()
-    if keys[pygame.K_a]:
-        player2.moveLeft(dist)
-    if keys[pygame.K_d]:
-        player2.moveRight(dist)
-    if keys[pygame.K_s]:
-        player2.moveDown(dist)
-    if keys[pygame.K_w]:
-        player2.moveUp(dist)
 
     # Collision detection
     p1_hit_list = pygame.sprite.spritecollide(player1, tile_group, False)
