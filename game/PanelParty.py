@@ -52,7 +52,7 @@ class Player(pygame.sprite.Sprite):
 # General setup
 pygame.init()
 socket = Client()
-socket.connect("http://localhost:8000")
+socket.connect("https://panel-party-ws.fly.dev/")
 
 # Main window
 screen_width = 600
