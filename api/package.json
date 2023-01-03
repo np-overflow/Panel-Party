@@ -1,13 +1,21 @@
 {
-  "private": true,
+  "name": "socket.io",
+  "version": "1.0.0",
+  "description": "",
   "scripts": {
-    "build": "nuxt build",
-    "dev": "nuxt dev",
-    "generate": "nuxt generate",
-    "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "dev": "ts-node src/server",
+    "dev:client": "ts-node src/client",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "prompt-async": "^0.9.9",
+    "socket.io": "^4.5.4",
+    "socket.io-client": "^4.5.4"
   },
   "devDependencies": {
-    "nuxt": "3.0.0"
+    "@types/node": "^18.11.18"
   }
 }
