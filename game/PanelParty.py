@@ -65,7 +65,7 @@ timer = 10
 tile_size = 30
 my_font = pygame.font.SysFont('Comic Sans MS', 30)
 text = my_font.render(str(timer), True, (0, 0, 0))
-timer_event = pygame.USEREVENT+1
+timer_event = pygame.USEREVENT + 1
 pygame.time.set_timer(timer_event, 1000)
 
 # Game Objects
@@ -81,21 +81,18 @@ for row in range(40, screen_width, 35):
 player_group = pygame.sprite.Group()
 
 # Create player1
-player1 = Player(
-    "C:\\Users\\xinyi\\Downloads\\Panel-Party\\game\\ghost.png", 50, 50)
+player1 = Player("/ghost.png", 50, 50)
 player1.rect.x = 0
 player1.rect.y = 0
 player_group.add(player1)
 all_group.add(player1)
 
 # Create player2
-player2 = Player(
-    "C:\\Users\\xinyi\\Downloads\\Panel-Party\\game\\super-mario.png", 50, 50)
+player2 = Player("/super-mario.png", 50, 50)
 player2.rect.x = screen_width - 25
 player2.rect.y = screen_height - 25
 player_group.add(player2)
 all_group.add(player2)
-
 
 # Game Loop
 while True and timer != 0:
@@ -110,12 +107,12 @@ while True and timer != 0:
         elif event.type == timer_event:
             timer -= 1
             text = my_font.render(
-                "Time left: "+str(timer)+" sec", True, (0, 0, 0))
+                "Time left: " + str(timer) + " sec", True, (0, 0, 0))
             if timer == 0:
                 pygame.time.wait(4000)
                 pygame.time.set_timer(timer_event, 0)
     screen.fill((0, 0, 0))
-    pygame.draw.rect(screen, (0, 255, 0), pygame.Rect(0, 0, 600, 600),  2)
+    pygame.draw.rect(screen, (0, 255, 0), pygame.Rect(0, 0, 600, 600), 2)
     screen.blit(text, (250, 650))
 
     # keys to control movements
@@ -158,9 +155,9 @@ while True and timer != 0:
             p2_points += 1
 
     # Display score
-    text_surface = my_font.render("Ghost: "+str(p1_points), False, (0, 255, 0))
+    text_surface = my_font.render("Ghost: " + str(p1_points), False, (0, 255, 0))
     screen.blit(text_surface, (100, 600))
-    text_surface = my_font.render("Mario: "+str(p2_points), False, (0, 255, 0))
+    text_surface = my_font.render("Mario: " + str(p2_points), False, (0, 255, 0))
     screen.blit(text_surface, (400, 600))
     all_group.draw(screen)
     all_group.update()
