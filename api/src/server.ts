@@ -1,17 +1,24 @@
 import { Server, Socket } from 'socket.io'
 import { ClientToServerEvents, InterServerEvents, ServerToClientEvents, SocketData } from './types';
+import express, { Express } from 'express';
+import { createServer } from 'http';
 
-const server = new Server<
-    ClientToServerEvents,
-    ServerToClientEvents,
-    InterServerEvents,
-    SocketData
->(8000);
+const app: Express = express()
+    , server = createServer(app)
+    , io = new Server<
+        ClientToServerEvents,
+        ServerToClientEvents,
+        InterServerEvents,
+        SocketData
+    >(server);
+
+server.listen(8000, () => {
+    console.info('⚡️ [server]: Server is running at http://localhost:8000')
+});
 
 let pid = -1;
-console.info("Server started on port 8000")
 
-server.on("connection", (socket: Socket<ClientToServerEvents, ServerToClientEvents>) => {
+io.on("connection", (socket: Socket<ClientToServerEvents, ServerToClientEvents>) => {
     const { id } = socket
 
     socket.join("room")
@@ -20,7 +27,7 @@ server.on("connection", (socket: Socket<ClientToServerEvents, ServerToClientEven
 
     socket.on("keyPress", ({ key }) => {
         console.info(`Client [id=${id}] pressed [key=${key}]`);
-        server.to("room").emit("keyPress", { key, id });
+        io.to("room").emit("keyPress", { key, id });
     })
 });
 
