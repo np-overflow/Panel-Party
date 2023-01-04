@@ -7,30 +7,30 @@ import uuid
 btn = Button()
 sid = uuid.uuid4()
 
-requests.post('https://panel-party-ws.fly.dev/join', json={'sid': sid})
+requests.post('https://panel-party-ws.fly.dev/join', json={'sid': str(sid)})
 
 
 def left(state):
     print('Left button pressed' if state else 'Left button released')
-    requests.post('https://panel-party-ws.fly.dev/key', json={'key': 'LEFT', 'sid': sid})
+    requests.post('https://panel-party-ws.fly.dev/key', json={'key': 'LEFT', 'sid': str(sid)})
     # socket.emit('keyPress', {"key": "LEFT", "sid": socket.get_sid()})
 
 
 def right(state):  # neater use of 'if' follows:
     print('Right button pressed' if state else 'Right button released')
-    requests.post('https://panel-party-ws.fly.dev/key', json={'key': 'RIGHT', 'sid': sid})
+    requests.post('https://panel-party-ws.fly.dev/key', json={'key': 'RIGHT', 'sid': str(sid)})
     # socket.emit('keyPress', {"key": "RIGHT", "sid": socket.get_sid()})
 
 
 def up(state):
     print('Up button pressed' if state else 'Up button released')
-    requests.post('https://panel-party-ws.fly.dev/key', json={'key': 'UP', 'sid': sid})
+    requests.post('https://panel-party-ws.fly.dev/key', json={'key': 'UP', 'sid': str(sid)})
     # socket.emit('keyPress', {"key": "UP", "sid": socket.get_sid()})
 
 
 def down(state):
     print('Down button pressed' if state else 'Down button released')
-    requests.post('https://panel-party-ws.fly.dev/key', json={'key': 'DOWN', 'sid': sid})
+    requests.post('https://panel-party-ws.fly.dev/key', json={'key': 'DOWN', 'sid': str(sid)})
     # socket.emit('keyPress', {"key": "DOWN", "sid": socket.get_sid()})
 
 
