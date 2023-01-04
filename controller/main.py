@@ -1,40 +1,44 @@
 #!/usr/bin/env python3
 from ev3dev2.button import Button
 from time import sleep
-
-
-# This program requires LEGO EV3 MicroPython v2.0 or higher.
-# Click "Open user guide" on the EV3 extension tab for more information.
-
-
-# Create your objects here.
-
-
-# Write your program here.
-
+import requests
+import uuid
 
 btn = Button()
+sid = uuid.uuid4()
 
-# Do something when state of any button changes:
-  
+requests.post('https://panel-party-ws.fly.dev/join', json={'sid': sid})
+
+
 def left(state):
-    if state:
-        print('Left button pressed')
-    else:
-        print('Left button released')
-    
+    print('Left button pressed' if state else 'Left button released')
+    requests.post('https://panel-party-ws.fly.dev/key', json={'key': 'LEFT', 'sid': sid})
+    # socket.emit('keyPress', {"key": "LEFT", "sid": socket.get_sid()})
+
+
 def right(state):  # neater use of 'if' follows:
     print('Right button pressed' if state else 'Right button released')
-    
+    requests.post('https://panel-party-ws.fly.dev/key', json={'key': 'RIGHT', 'sid': sid})
+    # socket.emit('keyPress', {"key": "RIGHT", "sid": socket.get_sid()})
+
+
 def up(state):
     print('Up button pressed' if state else 'Up button released')
-    
+    requests.post('https://panel-party-ws.fly.dev/key', json={'key': 'UP', 'sid': sid})
+    # socket.emit('keyPress', {"key": "UP", "sid": socket.get_sid()})
+
+
 def down(state):
     print('Down button pressed' if state else 'Down button released')
-    
+    requests.post('https://panel-party-ws.fly.dev/key', json={'key': 'DOWN', 'sid': sid})
+    # socket.emit('keyPress', {"key": "DOWN", "sid": socket.get_sid()})
+
+
 def enter(state):
     print('Enter button pressed' if state else 'Enter button released')
-    
+    # socket.emit('keyPress', {"key": "ENTER", "sid": socket.get_sid()})
+
+
 btn.on_left = left
 btn.on_right = right
 btn.on_up = up
