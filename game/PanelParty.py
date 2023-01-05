@@ -51,8 +51,8 @@ class Player(pygame.sprite.Sprite):
 
 # General setup
 pygame.init()
-socket = Client()
-socket.connect("https://panel-party-ws.fly.dev/")
+# socket = Client()
+# socket.connect("https://panel-party-ws.fly.dev/")
 
 # Main window
 screen_width = 600
@@ -64,7 +64,7 @@ pygame.display.set_caption('Panel Party')
 dist = 1
 p1_points = 0
 p2_points = 0
-timer = 20
+timer = 40
 tile_size = 30
 my_font = pygame.font.SysFont('Comic Sans MS', 30)
 text = my_font.render(str(timer), True, (0, 0, 0))
@@ -97,38 +97,11 @@ player2.rect.y = screen_height - 25
 player_group.add(player2)
 all_group.add(player2)
 
-player_map = {
-    '0':  player1,
-    '1': player2
-}
 
-
-@socket.on('keyPress')
-def on_key_press(data):
-    key: str = data.get('key').rstrip()
-    sid = data.get('id')
-
-    if key == 'LEFT':
-        player_map.get(sid).moveLeft(dist)
-    if key == 'RIGHT':
-        player_map.get(sid).moveRight(dist)
-    if key == 'DOWN':
-        player_map.get(sid).moveDown(dist)
-    if key == 'UP':
-        player_map.get(sid).moveUp(dist)
-    pass
-
-
-@socket.on('clientJoin')
-def on_client_join(data):
-    player_map[data.get("id")] = player_map.pop(data.get("pid"))
-    print(f"{player_map} \n")
-    # print(f"{data} \n")
-    pass
 
 
 # Game Loop
-while True and timer != 0:
+while timer >= 0:
     p1_points = 0
     p2_points = 0
     my_font = pygame.font.SysFont('Comic Sans MS', 30)
@@ -136,17 +109,41 @@ while True and timer != 0:
     # end game criteria
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
+            exit()
             pygame.quit()
         elif event.type == timer_event:
             timer -= 1
             text = my_font.render(
                 "Time left: " + str(timer) + " sec", True, (0, 0, 0))
             if timer == 0:
+                # this part is causing the freeze
                 pygame.time.wait(4000)
                 pygame.time.set_timer(timer_event, 0)
     screen.fill((0, 0, 0))
     pygame.draw.rect(screen, (0, 255, 0), pygame.Rect(0, 0, 600, 600), 2)
     screen.blit(text, (250, 650))
+
+    keys = pygame.key.get_pressed()
+    # Player 1 movements
+    player1.border()
+    if keys[pygame.K_LEFT]:
+        player1.moveLeft(dist)
+    if keys[pygame.K_RIGHT]:
+        player1.moveRight(dist)
+    if keys[pygame.K_DOWN]:
+        player1.moveDown(dist)
+    if keys[pygame.K_UP]:
+        player1.moveUp(dist)
+    # Player 2 movements
+    player2.border()
+    if keys[pygame.K_a]:
+        player2.moveLeft(dist)
+    if keys[pygame.K_d]:
+        player2.moveRight(dist)
+    if keys[pygame.K_s]:
+        player2.moveDown(dist)
+    if keys[pygame.K_w]:
+        player2.moveUp(dist)
 
     # Collision detection
     p1_hit_list = pygame.sprite.spritecollide(player1, tile_group, False)
@@ -172,3 +169,5 @@ while True and timer != 0:
     all_group.draw(screen)
     all_group.update()
     pygame.display.update()
+
+pygame.quit()
