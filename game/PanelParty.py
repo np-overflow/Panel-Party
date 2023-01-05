@@ -121,23 +121,23 @@ while timer >= 0:
     keys = pygame.key.get_pressed()
     # Player 1 movements
     player1.border()
-    if keys[pygame.K_LEFT]:
+    if keys[pygame.K_a]:
         player1.moveLeft(dist)
-    if keys[pygame.K_RIGHT]:
+    if keys[pygame.K_d]:
         player1.moveRight(dist)
-    if keys[pygame.K_DOWN]:
+    if keys[pygame.K_s]:
         player1.moveDown(dist)
-    if keys[pygame.K_UP]:
+    if keys[pygame.K_w]:
         player1.moveUp(dist)
     # Player 2 movements
     player2.border()
-    if keys[pygame.K_a]:
+    if keys[pygame.K_LEFT]:
         player2.moveLeft(dist)
-    if keys[pygame.K_d]:
+    if keys[pygame.K_RIGHT]:
         player2.moveRight(dist)
-    if keys[pygame.K_s]:
+    if keys[pygame.K_DOWN]:
         player2.moveDown(dist)
-    if keys[pygame.K_w]:
+    if keys[pygame.K_UP]:
         player2.moveUp(dist)
 
     # Collision detection
