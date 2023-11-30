@@ -108,15 +108,11 @@ while timer >= 0:
             pygame.quit()
         elif event.type == timer_event:
             timer -= 1
-            text = my_font.render(
-                "Time left: " + str(timer) + " sec", True, (0, 0, 0))
             if timer == 0:
-                # this part is causing the freeze
                 pygame.time.wait(4000)
                 pygame.time.set_timer(timer_event, 0)
     screen.fill((0, 0, 0))
     pygame.draw.rect(screen, (0, 255, 0), pygame.Rect(0, 0, 600, 600), 2)
-    screen.blit(text, (250, 650))
 
     keys = pygame.key.get_pressed()
     # Player 1 movements
